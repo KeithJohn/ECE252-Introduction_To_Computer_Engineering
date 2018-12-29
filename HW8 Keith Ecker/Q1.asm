@@ -1,0 +1,44 @@
+
+.ORIG x3000
+	LD R6, COUNTER
+	LD R3, negONE
+	LD R5, FIFTEENBITMASK
+rs	ADD R6,R6,R3
+	BRn Done
+	JSR RightShift
+	BR rs
+	
+Done LD R4, Loc1
+	ST R4, Loc2
+STOP HALT
+
+	RightShift 
+		LD R2, LEFTSHIFTCOUNTER
+		
+	ls	ADD, R2, R2, R3
+		BRn rsDone
+		LD R0, Loc1
+		AND R1, R1, #0
+		ADD R0, R0,#0
+		BRp CLS
+		LD R1, ONE
+	CLS	ADD R0, R0, R0
+		ADD R0, R0, R1
+		ST R0,Loc1
+		BR ls
+	rsDone  
+		LD R4, Loc1
+		AND R4, R4,R5
+		ST R4,Loc1
+		ret	
+	
+	FIFTEENBITMASK .FILL x7FFF
+	ONE .FILL x0001
+	negONE .FILL xFFFF
+	COUNTER .FILL x0004
+	LEFTSHIFTCOUNTER .FILL x000F
+	Loc1 .BLKW 1
+	Loc2 .BLKW 1
+
+
+.END
